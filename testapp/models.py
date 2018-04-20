@@ -4,18 +4,18 @@ from django.db import models
 from django.db import models
 
 
-class Players(models.Model):
+class Player(models.Model):
     username = models.CharField(max_length=20)
     # можливості для розширення..
 
-class Games(models.Model):
+class Game(models.Model):
     isCompleted = models.BooleanField()
     isPublic = models.BooleanField()
     OwnerID = models.IntegerField()
     secondPlayerID = models.IntegerField()
     winnerID = models.IntegerField()
 
-class GameMoves(models.Model):
+class GameMove(models.Model):
     gameID = models.IntegerField()
     moveNo = models.IntegerField()
     # 'r' == rock(stone), 's' == scissors, 'p' == paper
