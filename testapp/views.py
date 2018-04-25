@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db import models
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
-
+from .models import Game #пошо надо документацию на 2,0 читать!
 
 # Create your views here.
 def index(request):
