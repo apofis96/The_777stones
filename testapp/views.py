@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.db import models
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from .models import Game #пошо надо документацию на 2,0 читать!
@@ -24,7 +23,7 @@ def index(request):
         context={'num_books': num_books, 'num_instances': num_instances,
                  'num_instances_available': num_instances_available, 'num_authors': num_authors},
     )
-class RegisterFormView(FormView):
+class RegisterFormView(RegistrationView):
     form_class = UserCreationForm
 
     # Ссылка, на которую будет перенаправляться пользователь в случае успешной регистрации.
@@ -50,6 +49,6 @@ def allGames(request):
     # переменной контекста context
     return render(
         request,
-        'index.html',
+        'allgames.html',
         context={'games':games},
     )
