@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import R
 from .models import Game #пошо надо документацию на 2,0 читать!
 
 # Create your views here.
@@ -24,7 +23,7 @@ def index(request):
         context={'num_books': num_books, 'num_instances': num_instances,
                  'num_instances_available': num_instances_available, 'num_authors': num_authors},
     )
-class RegisterFormView(RegistrationView):
+class RegisterFormView(FormView):
     form_class = UserCreationForm
 
     # Ссылка, на которую будет перенаправляться пользователь в случае успешной регистрации.
