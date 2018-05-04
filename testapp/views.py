@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import R
 from .models import Game #пошо надо документацию на 2,0 читать!
 
 # Create your views here.
