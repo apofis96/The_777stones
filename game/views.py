@@ -34,12 +34,31 @@ def newGame(request):
 
 def joinGame(request):
     if request.method == "POST":
-        id = request.POST.get("id")
-        games = Game.objects.get(pk=id)
-        if games.isPublic == False:
-            return joinPrivateGame(request, game = games)
-        else: return playGame(request, games)
+        if(request.session['firstJoin']):
+            id = request.POST.get("id")
+            games = Game.objects.get(pk=id)
+            request.session['gameID'] = id
+            if games.isPublic == False:
+                request.session['gameAllow'] = False
+                form = JoinPrivateGameForm()
+                request.session['firstJoin'] = False
+                return render(request, 'game/joinPrivateGame.html', {'form': form, 'kek': 2, 'games': games})
+            else:
+                request.session['gameAllow'] = True
+                return HttpResponseRedirect ('play')
+        else:
+            games = Game.objects.get(pk=request.session['gameID'])
+            name = request.POST.get("gameName")
+            if name == games.gameName:
+                request.session['gameAllow'] = True
+                request.session['firstJoin'] = True
+                return HttpResponseRedirect ('play')
+            else:
+                request.session['gameAllow'] = False
+                return HttpResponseRedirect('new')
     form = JoinGameForm()
+    request.session['gameAllow'] = False
+    request.session['firstJoin'] = True
     return render(request,'game/joinGame.html', {'form': form, 'kek' : 1})
 
 def joinPrivateGame(request, game):
@@ -51,5 +70,7 @@ def joinPrivateGame(request, game):
     form = JoinPrivateGameForm()
     return render(request,'game/joinPrivateGame.html', {'form': form, 'kek' : 2, 'game' : game})
 
-def playGame(request, game):
+def playGame(request):
+    if request.session['gameAllow']:
+        game = Game.objects.get(pk=request.session['gameID'])
     return render(request,'game/playGame.html', {'games': game})
