@@ -8,5 +8,18 @@
 <p>Братишка, я тебе <em>покушать</em> принёс</p>
 <li>GameID: {{ games.gameName }}</li>
 <li>Gamepriv: {{ games.isPublic }}</li>
+<h1>"Тут можно впихнуть лист с раундами"</h1>
+<form method="POST">
+    {% csrf_token %}
+    {% if game.IsNonCompleted %}
+        <input type=submit name="newMove" value="Играть">
+        {% if game.IsPlay%}
+            <input type=submit name="done" value="Закончить">
+        {% endif %}
+    {% else %}
+        <p>"Игра окончена"</p>
+    {% endif %}
+
+</form>
 </body>
 </html>
