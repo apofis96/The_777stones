@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
-
+from .models import Game #пошо надо документацию на 2,0 читать!
 
 # Create your views here.
 def index(request):
@@ -40,3 +40,15 @@ class RegisterFormView(FormView):
 
         # Вызываем метод базового класса
         return super(RegisterFormView, self).form_valid(form)
+
+def allGames(request):
+
+    games = Game.objects.filter(isPublic=True)
+
+    # Отрисовка HTML-шаблона index.html с данными внутри
+    # переменной контекста context
+    return render(
+        request,
+        'allgames.html',
+        context={'games':games},
+    )

@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Available games: </h1>
+    <ul>
+        {% for game in games %}
+            <li>{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,22 +1,21 @@
-from django.db import models
-
 # Create your models here.
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Player(models.Model):
-    username = models.CharField(max_length=20)
+    uname = models.CharField(max_length=20, null=True)
     # можливості для розширення..
 
 class Game(models.Model):
-    isCompleted = models.BooleanField()
+    isCompleted = models.BooleanField(default=False)
     isPublic = models.BooleanField()
-    OwnerID = models.IntegerField()
-    secondPlayerID = models.IntegerField()
-    winnerID = models.IntegerField()
+    gameName = models.CharField(max_length=100, default='NoNameGame')
+    ownerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+    secondPlayerID =models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='secondPlayer')
+    winnerID = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='winner')
 
 class GameMove(models.Model):
-    gameID = models.IntegerField()
+    gameID = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='game')
     moveNo = models.IntegerField()
     # 'r' == rock(stone), 's' == scissors, 'p' == paper
     ownerMove = models.CharField(max_length=1)
