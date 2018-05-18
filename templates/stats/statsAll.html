@@ -1,12 +1,12 @@
 {% extends "base_generic.html" %}
 {% block title %}
-    <title>Stats</title>
+    Stats
 {% endblock %}
 {% block content %}
     <h1>Stats for user {{ user.get_username }}</h1>
     <ul>
         <li>Games played: {{ amount }}</li>
         <li>Victories: {{ victories }}</li>
-        <li>Winrate: {{ winrate }} %</li>
+        <li>Winrate: {{ winrate }}</li>
     </ul>
 {% endblock %}

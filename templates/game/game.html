@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>Братишка, я тебе <em>GAME</em> принёс</p>
-<li>GameID: {{ games.gameName }}</li>
+{% extends "base_generic.html" %}
+{% block title %}All Games{% endblock %}
+{% block content %}
+    <ul>
+    {% for game in games %}
+    <li></li>
+    </ul>
+{% endblock %}
 <a href="{% url 'New Game' %}"> New game</a>
-{% if user.is_authenticated %}
-    <li>User: {{ user.get_username }}</li>
-    <li>UserID: {{ user.get_id }}</li>
-{% endif %}
-</body>
-</html>

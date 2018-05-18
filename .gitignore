@@ -99,8 +99,6 @@ ENV/
 
 # mypy
 .mypy_cache/
-<<<<<<< HEAD
-=======
 
 # IDE
-.idea\
+.idea/
