@@ -13,12 +13,13 @@ class Game(models.Model):
     ownerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     secondPlayerID =models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='secondPlayer')
     winnerID = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='winner')
-
+    ownerScore = models.IntegerField(default=0)
+    secondPlayerScore = models.IntegerField(default=0)
 class GameMove(models.Model):
     gameID = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='game')
     moveNo = models.IntegerField()
     # 'r' == rock(stone), 's' == scissors, 'p' == paper
-    ownerMove = models.CharField(max_length=1)
-    secondPlayerMove = models.CharField(max_length=1)
+    ownerMove = models.CharField(max_length=1, null=True)
+    secondPlayerMove = models.CharField(max_length=1, null=True)
 
 

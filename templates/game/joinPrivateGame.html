@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Братишка, я тебе <em>приватную игру</em> принёс</p>
+<li>GameID: {{ games.gameName }}</li>
+<li>KekID: {{ kek }}</li>
+<form method="POST">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+</body>
+</html>
