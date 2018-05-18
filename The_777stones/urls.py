@@ -42,3 +42,7 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += [
     path('game/', include('game.urls')),
 ]
+
+urlpatterns += [
+    path('stats/', include('userStatistics.urls')),
+]
