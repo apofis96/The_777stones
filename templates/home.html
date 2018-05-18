@@ -2,4 +2,13 @@
 {% block title %}Home{% endblock %}
 {% block content %}
     <h1>Welcome, {{ request.user.get_username }}</h1>
+    <div id="aboutuser">
+        <div id="userpic">==userpic will be here==</div>
+        <div>
+            <em>{{ request.user.get_username }}</em><br><hr>
+            Joined on {{ request.user.date_joined }}<br>
+            Last login on {{ request.user.last_login }}<br>
+            Goto <a href="{% url 'Games Stats' %}">my statistics </a>
+        </div>
+    </div>
 {% endblock %}

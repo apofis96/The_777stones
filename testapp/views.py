@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from .models import Game #пошо надо документацию на 2,0 читать!
@@ -9,8 +10,10 @@ def index(request):
         request,
         'index.html',
     )
+
+@login_required()
 def home(request):
-    return render(request, 'home.html',)
+    return render(request, 'home.html')
 
 class RegisterFormView(FormView):
     form_class = UserCreationForm

@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from testapp.models import Game
 from django.db.models import Q
 
 # Create your views here.
+@login_required()
 def statsAll(request):
     """
     Функция отображения для домашней страницы сайта.
