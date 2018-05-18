@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from .forms import NewGameForm
 from .forms import JoinGameForm
@@ -15,12 +16,14 @@ from django.contrib.auth.models import User
 #    id = forms.IntegerField(label="ID")
 
 # Create your views here.
+@login_required()
 def game(request):
     games=Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
     games=games.exclude(ownerID=request.user)
     return render(
         request,'game/game.html', { 'games': games }
     )
+@login_required()
 def newGame(request):
     if request.method == "POST":
         form = NewGameForm(request.POST)
@@ -31,6 +34,7 @@ def newGame(request):
     form = NewGameForm()
     return render(request,'game/newGame.html', {'form': form})
 
+@login_required()
 def joinGame(request):
     if request.method == "POST":
         if(request.session['firstJoin']):
@@ -67,6 +71,7 @@ def joinGame(request):
     request.session['firstJoin'] = True
     return render(request,'game/joinGame.html', {'form': form, 'kek' : 1})
 
+@login_required()
 def joinPrivateGame(request, game):
     if request.method == "POST":
         name = request.POST.get("gameName")
@@ -76,6 +81,7 @@ def joinPrivateGame(request, game):
     form = JoinPrivateGameForm()
     return render(request,'game/joinPrivateGame.html', {'form': form, 'kek' : 2, 'game' : game})
 
+@login_required()
 def playGame(request):
     if request.session['gameAllow']:
         games = Game.objects.get(pk=request.session['gameID'])
@@ -115,5 +121,6 @@ def playGame(request):
         return render(request,'game/playGame.html', {'games': games, 'game' : game})
     return HttpResponse ("<h1>KekLOH</h1>")
 
+@login_required()
 def playMove (request):
     5
