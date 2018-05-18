@@ -10,5 +10,4 @@ from django.conf.urls import include
 urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.RegisterFormView.as_view(), name="sign_up"),
-    path('games/all', views.allGames, name='allGames')
 ]

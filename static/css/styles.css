@@ -64,7 +64,9 @@ nav{
 	nav ul li {
 		float: left;
 	}
-
+.availableGame{
+	padding: 2em;
+}
 #price-table{
 	width: 70%;
 }

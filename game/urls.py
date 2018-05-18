@@ -8,7 +8,7 @@ from django.conf.urls import include
 
 
 urlpatterns = [
-    path('', views.game, name='Game game'),
+    path('', views.game, name='All Games'),
 ]
 urlpatterns += [
     path('new', views.newGame, name='New Game'),

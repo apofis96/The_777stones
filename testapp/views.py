@@ -5,24 +5,13 @@ from .models import Game #пошо надо документацию на 2,0 ч
 
 # Create your views here.
 def index(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
-    # Генерация "количеств" некоторых главных объектов
-    num_books = 1
-    num_instances = 1
-    # Доступные книги (статус = 'a')
-    num_instances_available = 1
-    num_authors = 1  # Метод 'all()' применен по умолчанию.
-
-    # Отрисовка HTML-шаблона index.html с данными внутри
-    # переменной контекста context
     return render(
         request,
         'index.html',
-        context={'num_books': num_books, 'num_instances': num_instances,
-                 'num_instances_available': num_instances_available, 'num_authors': num_authors},
     )
+def home(request):
+    return render(request, 'home.html',)
+
 class RegisterFormView(FormView):
     form_class = UserCreationForm
 
@@ -40,15 +29,3 @@ class RegisterFormView(FormView):
 
         # Вызываем метод базового класса
         return super(RegisterFormView, self).form_valid(form)
-
-def allGames(request):
-
-    games = Game.objects.filter(isPublic=True)
-
-    # Отрисовка HTML-шаблона index.html с данными внутри
-    # переменной контекста context
-    return render(
-        request,
-        'allgames.html',
-        context={'games':games},
-    )

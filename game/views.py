@@ -5,6 +5,7 @@ from .forms import JoinGameForm
 from .forms import JoinPrivateGameForm
 from testapp.models import Game
 from testapp.models import GameMove
+from django.db.models import Q
 from django.http import  HttpResponseRedirect
 from django.http import HttpResponse
 from django import forms
@@ -15,15 +16,10 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def game(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
-    # Генерация "количеств" некоторых главных объектов
-
-    # Отрисовка HTML-шаблона index.html с данными внутри
-    # переменной контекста context
+    games=Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
+    games=games.exclude(ownerID=request.user)
     return render(
-        request,'game/game.html',
+        request,'game/game.html', { 'games': games }
     )
 def newGame(request):
     if request.method == "POST":
