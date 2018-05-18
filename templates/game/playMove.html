@@ -5,14 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-<p>Братишка, я тебе <em>покушать</em> принёс</p>
-<li>GameID: {{ games.gameName }}</li>
-<li>Gamepriv: {{ games.isPublic }}</li>
+<p>Братишка, я тебе <em>ход</em> принёс</p>
+<li>GameID: {{ game.gameName }}</li>
+{% if change %}
+    <p>Ваш ход: {{ oldMove }}</p>
+    <p>Изменить ход на</p>
+{% else %}
+    <p>Ход:</p>
+{% endif %}
 <form method="POST">
     {% csrf_token %}
     <input type=submit name="stone" value="stone">
-    <input type=submit name="paper" value="paper">
     <input type=submit name="scissors" value="scissors">
+    <input type=submit name="paper" value="paper">
 </form>
 </body>
 </html>
