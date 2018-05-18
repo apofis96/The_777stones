@@ -21,6 +21,7 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import auth
 from django.views.generic import RedirectView
+from testapp import views
 
 
 urlpatterns = [
@@ -41,4 +42,11 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [
     path('game/', include('game.urls')),
+]
+
+urlpatterns += [
+    path('stats/', include('userStatistics.urls')),
+]
+urlpatterns += [
+    path('home/', views.home, name='Home'),
 ]
