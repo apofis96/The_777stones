@@ -6,9 +6,7 @@ from django.db.models import Q
 # Create your views here.
 @login_required()
 def statsAll(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
+
     currentUser = request.user;
     games=Game.objects.filter(Q(ownerID = currentUser) | Q(secondPlayerID = currentUser) )
     wonGames=games.filter(winnerID=currentUser)
