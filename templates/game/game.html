@@ -4,10 +4,10 @@
     {% if games.count > 0 %}
         <p>Didn't find one? <a href="{% url 'New Game' %}"> New game</a></p>
 
-        <h1>Available Games: {{ alllgamestats.available }}, now playing {{ allgamesstats.inProgress }}</h1>
+        <h1>Available Games: {{ allgamesstats.available }}, now playing {{ allgamesstats.inProgress }}</h1>
         <ul>
         {% for game in games %}
-            <li><div class="availableGame">{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></div></li>
+            <li><a href="{% url 'Join Game' %}?id={{ game.id }}"><div class="availableGame">{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></div></a></li>
         {% endfor %}
         </ul>
     {% else %}
