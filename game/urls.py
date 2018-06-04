@@ -22,3 +22,6 @@ urlpatterns += [
 urlpatterns += [
     path('play', views.playGame, name='Play Game'),
 ]
+urlpatterns += [
+    path('playMove', views.playMove, name='Play Move')
+]
