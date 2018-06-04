@@ -3,10 +3,12 @@
     Stats
 {% endblock %}
 {% block content %}
-    <h1>Stats for user {{ user.get_username }}</h1>
+    <h1>Best user: {{ bestUser.user.get_username }} -- {{ bestUser.winrate }} %</h1>
+    <h1>Worst user: {{ worstUser.user.get_username }} -- {{ worstUser.winrate }} %</h1>
+    <h1>Stats for user {{ currentUser.username }} (#{{ currentUser.place }} in rating)</h1>
     <ul>
-        <li>Games played: {{ amount }}</li>
-        <li>Victories: {{ victories }}</li>
-        <li>Winrate: {{ winrate }} %</li>
+        <li>Games played: {{ currentUser.amountGamesPlayed }}</li>
+        <li>Victories: {{ currentUser.victories }}</li>
+        <li>Winrate: {{ currentUser.winrate }} %</li>
     </ul>
 {% endblock %}
