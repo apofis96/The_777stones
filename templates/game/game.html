@@ -4,11 +4,12 @@
     {% if games.count > 0 %}
         <p>Didn't find one? <a href="{% url 'New Game' %}"> New game</a></p>
 
-        <h1>Available Games: </h1>
+        <h1>Available Games: {{ alllgamestats.available }}, now playing {{ allgamesstats.inProgress }}</h1>
         <ul>
         {% for game in games %}
-            <li><div class="availableGame">{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></li>
+            <li><div class="availableGame">{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></div></li>
         {% endfor %}
+        </ul>
     {% else %}
          <p>No games available! <a href="{% url 'New Game' %}"> New game</a></p>
     {% endif %}

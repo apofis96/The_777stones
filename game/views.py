@@ -18,10 +18,15 @@ from django.contrib.auth.models import User
 # Create your views here.
 @login_required()
 def game(request):
-    games=Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
-    games=games.exclude(ownerID=request.user)
+    games = Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
+    games = games.exclude(ownerID=request.user)
     return render(
-        request,'game/game.html', { 'games': games }
+        request, 'game/game.html', {'games': games,
+                                    'allgamesstats': {
+                                        'available': games.count(),
+                                        'inProgress': Game.objects.filter(Q(secondPlayerID__isnull=False),
+                                                                           isCompleted=False).count()
+                                    }}
     )
 @login_required()
 def newGame(request):
