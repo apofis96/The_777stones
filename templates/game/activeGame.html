@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block title %}{% if isApproved %}Game!{% else %}Join first!{% endif %}{% endblock %}
+
+{% block content %}
+    {% if isApproved %}
+        <form>
+            {% if wrongPassMessageOn %}
+                <p>Wrong pass! Try again</p>
+            {% endif %}
+            <input type="password" name="password" about="Input Password" />
+            <input type="submit" formmethod="post" />
+            </form>
+    {% else %}
+        <h1>{{ game.ownerScore }} : {{ game.secondPlayerScore }}</h1>
+        <form method="post">
+            <input type="submit" name="move" value="r" />
+            <input type="submit" name="move" value="s" />
+            <input type="submit" name="move" value="p" />
+        </form>
+        <ul>
+            {% for move in moves %}
+            <li>{{ move.ownerMove }} ---------- {{ move.secondPlayerMove }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

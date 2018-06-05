@@ -49,10 +49,74 @@ def joinGame(request):
     id = request.GET.get("id")
     games = Game.objects.filter(~Q(ownerID=request.user.id,), isCompleted=False, secondPlayerID=None, pk=id)
     if games[0]:
-        if games[0].isPublic:
-            request.session['game']['gameID'] = id
-            HttpResponseRedirect('play', request)
-    return redirect('Play Game')
+        request.session['game']['gameID'] = id
+        request.method = request.POST
+        return redirect('Play Game')
+
+
+@login_required()
+def playGame(request):
+    request.session.modified = True
+    currGame = Game.objects.filter(pk=request.session['game']['gameID'])[0]
+    moves = GameMove.objects.filter(gameID=currGame.id).order_by('moveNo')
+    params = { 'game': currGame,
+        'moves' : moves,
+        'isApproved' : currGame.secondPlayerID != None,
+        'passwordRequired': not currGame.isPublic,
+        'wrongPassMessageOn': False}
+    if currGame.secondPlayerID != None & currGame.ownerID != request.user.id:
+        if currGame.isPublic:
+            currGame.secondPlayerID = request.user.id
+        else:
+            if request.POST.get('password') != None & request.POST.get('password') == currGame.password:
+                currGame.secondPlayerID = request.user.id
+            else:
+                params['wrongPassMessageOn'] = True;
+    else:
+        if currGame.secondPlayerID == request.user.id:
+            move = request.POST.get('move')
+            if moves[-1].secondPlayerMove is not None:
+                newMove = GameMove()
+                newMove.moveNo = moves.count()
+                newMove.secondPlayerMove = move
+                newMove.save()
+            else:
+                moves[-1].secondPlayerMove = move
+        elif currGame.ownerID == request.user.id:
+            move = request.POST.get('move')
+            if moves[-1].ownerMove is not None:
+                newMove = GameMove()
+                newMove.moveNo = moves.count()
+                newMove.ownerMove = move
+                newMove.save()
+            else:
+                moves[-1].ownerMove = move
+    owScore = 0; secScore = 0
+    for move in moves:
+        if move.ownerMove == 's':
+            if move.secondPlayerMove == 'r':
+                secScore += 1
+            elif move.secondPlayerMove == 'p':
+                owScore += 1
+        elif move.ownerMove == 'p':
+            if move.secondPlayerMove == 's':
+                secScore += 1
+            elif move.secondPlayerMove == 'r':
+                owScore += 1
+        elif move.ownerMove == 'r':
+            if move.secondPlayerMove == 'p':
+                secScore += 1
+            elif move.secondPlayerMove == 's':
+                owScore += 1
+    currGame.ownerScore = owScore
+    currGame.secondPlayerScore = secScore
+    currGame.save()
+    params['isApproved'] = currGame.secondPlayerID != None
+    return render(request, 'ActiveGame', params)
+
+
+
+
 @login_required()
 def joinGame1(request):
     request.session.modified = True
@@ -105,7 +169,7 @@ def joinPrivateGame(request, game):
     return render(request,'game/joinPrivateGame.html', {'form': form, 'kok' : request.session['game']['gameAllow'], 'game' : game})
 
 @login_required()
-def playGame(request):
+def playGame1(request):
     request.session.modified = True
     request.session['game']['moveID'] = -1
     games = Game.objects.get(pk=request.session['game']['gameID'])
@@ -146,6 +210,8 @@ def playGame(request):
             return HttpResponse("<h2>Done</h2>")
     return render(request,'game/playGame.html', {'games': games, 'game' : game , 'kek' : request.session['game']['gameAllow'] })
     return HttpResponse ("<h1>KekLOH</h1>")
+
+
 
 @login_required()
 def playMove (request):
