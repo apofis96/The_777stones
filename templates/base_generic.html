@@ -30,6 +30,7 @@
           <li><a href="{% url 'Games Stats' %}">Stats</a></li>
       </ul>
       </nav>
+      {% block aside %}{% endblock %}
       <main>
       {% block content %}{% endblock %}
       </main>

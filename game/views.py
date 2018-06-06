@@ -20,8 +20,10 @@ from django.contrib.auth.models import User
 def game(request):
     games = Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
     games = games.exclude(ownerID=request.user)
+    activeGames = Game.objects.filter(Q(isCompleted=False) and (Q(ownerID=request.user) | Q(secondPlayerID=request.user)))
     return render(
-        request, 'game/game.html', {'games': games,
+        request, 'game/game.html', {'userGames': activeGames,
+                                    'games': games,
                                     'allgamesstats': {
                                         'available': games.count(),
                                         'inProgress': Game.objects.filter(Q(secondPlayerID__isnull=False),
@@ -47,8 +49,10 @@ def newGame(request):
 @login_required()
 def joinGame(request):
     id = request.GET.get("id")
-    games = Game.objects.filter(~Q(ownerID=request.user.id,), isCompleted=False, secondPlayerID=None, pk=id)
+    games = Game.objects.filter(isCompleted=False, pk=id)
     if games[0]:
+        request.session.modified = True
+        request.session['game'] = {}
         request.session['game']['gameID'] = id
         request.method = request.POST
         return redirect('Active Game')
@@ -76,7 +80,8 @@ def playGame(request):
     else:
         if currGame.secondPlayerID == request.user:
             move = request.POST.get('move')
-            if moves.count() == 0 or moves[:1].first().secondPlayerMove is not None:
+            if moves.count() == 0 or \
+                    (moves[:1].first().secondPlayerMove is not None and moves[:1].first().ownerMove is not None):
                 newMove = GameMove()
                 newMove.gameID = currGame
                 newMove.moveNo = moves.count()
@@ -86,7 +91,8 @@ def playGame(request):
                 moves[:1].first().secondPlayerMove = move
         elif currGame.ownerID == request.user:
             move = request.POST.get('move')
-            if moves.count() == 0 or moves[:1].first().ownerMove is not None:
+            if moves.count() == 0 or \
+                    (moves[:1].first().secondPlayerMove is not None and moves[:1].first().ownerMove is not None):
                 newMove = GameMove()
                 newMove.gameID = currGame
                 newMove.moveNo = moves.count()
@@ -94,6 +100,8 @@ def playGame(request):
                 newMove.save()
             else:
                 moves[:1].first().ownerMove = move
+        else:
+            return redirect('All Games')
     owScore = 0; secScore = 0
     for move in moves:
         if move.ownerMove == 's':
@@ -116,8 +124,6 @@ def playGame(request):
     currGame.save()
     params['isApproved'] = moves.count() #currGame.secondPlayerID != None
     return render(request, 'game/activeGame.html', params)
-
-
 
 
 @login_required()
