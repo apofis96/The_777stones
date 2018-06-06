@@ -20,7 +20,7 @@ urlpatterns += [
     path('joinPrivate', views.joinPrivateGame, name='Join Private Game'),
 ]
 urlpatterns += [
-    path('play', views.playGame, name='Play Game'),
+    path('activeGame', views.playGame, name='Active Game'),
 ]
 urlpatterns += [
     path('playMove', views.playMove, name='Play Move')

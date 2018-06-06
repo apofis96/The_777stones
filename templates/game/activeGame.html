@@ -3,7 +3,7 @@
 {% block title %}{% if isApproved %}Game!{% else %}Join first!{% endif %}{% endblock %}
 
 {% block content %}
-    {% if isApproved %}
+    {% if passwordRequired %}
         <form>
             {% if wrongPassMessageOn %}
                 <p>Wrong pass! Try again</p>
@@ -14,6 +14,7 @@
     {% else %}
         <h1>{{ game.ownerScore }} : {{ game.secondPlayerScore }}</h1>
         <form method="post">
+        {% csrf_token %}
             <input type="submit" name="move" value="r" />
             <input type="submit" name="move" value="s" />
             <input type="submit" name="move" value="p" />
