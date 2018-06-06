@@ -18,7 +18,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 @login_required()
 def game(request):
-    games = Game.objects.filter(Q(secondPlayerID__isnull=True), isPublic=True, isCompleted=False)
+    games = Game.objects.filter(Q(secondPlayerID__isnull=True), isCompleted=False)
     games = games.exclude(ownerID=request.user)
     activeGames = Game.objects.filter(Q(isCompleted=False) and (Q(ownerID=request.user) | Q(secondPlayerID=request.user)))
     return render(
@@ -62,46 +62,49 @@ def joinGame(request):
 def playGame(request):
     request.session.modified = True
     currGame = Game.objects.filter(pk=request.session['game']['gameID'])[0]
-    moves = GameMove.objects.filter(gameID=currGame.id).order_by('moveNo')
+    moves = GameMove.objects.filter(gameID=currGame.id).order_by('-moveNo')
     params = { 'game': currGame,
         'moves' : moves,
         'isApproved' : currGame.secondPlayerID == None,
-        'passwordRequired': currGame.isPublic == False,
+        'passwordRequired': currGame.isPublic == False and currGame.secondPlayerID == None,
         'wrongPassMessageOn': False}
     if (currGame.secondPlayerID == None) and (currGame.ownerID != request.user):
         if currGame.isPublic:
             currGame.secondPlayerID = request.user
             currGame.save()
         else:
-            if request.POST.get('password') != None & request.POST.get('password') == currGame.password:
+            if request.POST.get('password') == currGame.password:
                 currGame.secondPlayerID = request.user
+                currGame.save()
+                params['passwordRequired'] = False
             else:
                 params['wrongPassMessageOn'] = True;
     else:
-        if currGame.secondPlayerID == request.user:
-            move = request.POST.get('move')
-            if moves.count() == 0 or \
-                    (moves[:1].first().secondPlayerMove is not None and moves[:1].first().ownerMove is not None):
-                newMove = GameMove()
-                newMove.gameID = currGame
-                newMove.moveNo = moves.count()
-                newMove.secondPlayerMove = move
-                newMove.save()
+        lastMove = moves[0]
+        move = request.POST.get('move')
+        if move != None:
+            if currGame.secondPlayerID == request.user:
+                if (lastMove.secondPlayerMove is not None and lastMove.ownerMove is not None):
+                    newMove = GameMove()
+                    newMove.gameID = currGame
+                    newMove.moveNo = moves.count()
+                    newMove.secondPlayerMove = move
+                    newMove.save()
+                else:
+                    lastMove.secondPlayerMove = move
+                    lastMove.save()
+            elif currGame.ownerID == request.user:
+                if (lastMove.ownerMove is not None and lastMove.secondPlayerMove is not None):
+                    newMove = GameMove()
+                    newMove.gameID = currGame
+                    newMove.moveNo = moves.count()
+                    newMove.ownerMove = move
+                    newMove.save()
+                else:
+                    lastMove.ownerMove = move
+                    lastMove.save()
             else:
-                moves[:1].first().secondPlayerMove = move
-        elif currGame.ownerID == request.user:
-            move = request.POST.get('move')
-            if moves.count() == 0 or \
-                    (moves[:1].first().secondPlayerMove is not None and moves[:1].first().ownerMove is not None):
-                newMove = GameMove()
-                newMove.gameID = currGame
-                newMove.moveNo = moves.count()
-                newMove.ownerMove = move
-                newMove.save()
-            else:
-                moves[:1].first().ownerMove = move
-        else:
-            return redirect('All Games')
+                return redirect('All Games')
     owScore = 0; secScore = 0
     for move in moves:
         if move.ownerMove == 's':
@@ -122,7 +125,7 @@ def playGame(request):
     currGame.ownerScore = owScore
     currGame.secondPlayerScore = secScore
     currGame.save()
-    params['isApproved'] = moves.count() #currGame.secondPlayerID != None
+    params['isApproved'] = currGame.secondPlayerID != None
     return render(request, 'game/activeGame.html', params)
 
 

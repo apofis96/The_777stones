@@ -4,13 +4,14 @@
 
 {% block content %}
     {% if passwordRequired %}
-        <form>
+        <form method="post" action="{% url 'Active Game' %}">
+        {% csrf_token %}
             {% if wrongPassMessageOn %}
-                <p>Wrong pass! Try again</p>
+                <p>Input password to this game: </p>
             {% endif %}
             <input type="password" name="password" about="Input Password" />
-            <input type="submit" formmethod="post" />
-            </form>
+            <input type="submit"/>
+        </form>
     {% else %}
         <h1>{{ game.ownerScore }} : {{ game.secondPlayerScore }}</h1>
         <form method="post">
