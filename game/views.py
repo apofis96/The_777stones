@@ -11,6 +11,8 @@ from django.http import  HttpResponseRedirect
 from django.http import HttpResponse
 from django import forms
 from django.contrib.auth.models import User
+from userStatistics.views import notify , notifyDel
+
 
 #class IDGameForm(forms.Form):
 #    id = forms.IntegerField(label="ID")
@@ -90,10 +92,14 @@ def playGame(request):
             else:
                 params['wrongPassMessageOn'] = True;
     else:
+        if (currGame.secondPlayerID != request.user and  currGame.ownerID != request.user):
+            return redirect('All Games')
+        notifyDel(currGame, request.user)
         params['passwordRequired'] = False
         move = request.POST.get('move')
         if request.method == "POST" and move != 'e':
             if currGame.secondPlayerID == request.user:
+                notify(currGame, currGame.ownerID, 'm')
                 if moves.count() == 0 or (moves[0].secondPlayerMove is not None and moves[0].ownerMove is not None):
                     newMove = GameMove()
                     newMove.gameID = currGame
@@ -107,6 +113,7 @@ def playGame(request):
                     lastMove.secondPlayerMove = move
                     lastMove.save()
             elif currGame.ownerID == request.user:
+                notify(currGame, currGame.secondPlayerID, 'm')
                 if moves.count() == 0 or (moves[0].ownerMove is not None and moves[0].secondPlayerMove is not None):
                     #return HttpResponse("<h2>Kak</h2>")
                     newMove = GameMove()
@@ -144,6 +151,11 @@ def playGame(request):
 
     move = request.POST.get('move')
     if move == 'e':
+        if (request.user == currGame.ownerID):
+            notify(currGame,currGame.secondPlayerID,'e')
+        else:
+            notify(currGame,currGame.ownerID,'e')
+
         if owScore > secScore:
             currGame.winnerID = currGame.ownerID
         elif owScore < secScore:

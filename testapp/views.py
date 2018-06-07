@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from .models import Game #пошо надо документацию на 2,0 читать!
-
+#from userStatistics.views import
+from .models import Notification
+from django.http import HttpResponseRedirect
 # Create your views here.
 def index(request):
     return render(
@@ -13,7 +15,13 @@ def index(request):
 
 @login_required()
 def home(request):
-    return render(request, 'home.html')
+    notify = Notification.objects.filter(playerID=request.user)
+    var = notify.count()
+    if (request.method == 'POST'):
+        kok = request.POST.get('close')
+        Notification.objects.filter(pk=kok).delete()
+        return HttpResponseRedirect('/home')
+    return render(request, 'home.html', {'notify' : notify, 'var':var} )
 
 class RegisterFormView(FormView):
     form_class = UserCreationForm
