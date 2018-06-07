@@ -277,6 +277,23 @@ form input{
 .movepic{
     width: 60px;
 }
+.move-button{
+    width: 30%;
+    border: none;
+    background: none;
+}
+.move-button img{
+    width: 50%;
+    border: none;
+}
+#giveup-button{
+    display: inline-block;
+    margin: 30px;
+    padding: 20px;
+    border-radius: 20px;
+    border-style: none;
+    background-color: var(--em-color-red);
+}
 main{
     display: block;
 	padding: 0;

@@ -20,10 +20,11 @@
 
         <form method="post">
         {% csrf_token %}
-            <input type="submit" name="move" value="r" />
-            <input type="submit" name="move" value="s" />
-            <input type="submit" name="move" value="p" />
-            <input type="submit" name="move" value="e"/>
+            <button class="move-button" type="submit" name="move" value="r"><img src="../../static/img/rt.png"/></button>
+            <button class="move-button" type="submit" name="move" value="s"><img src="../../static/img/st.png"/></button>
+            <button class="move-button" type="submit" name="move" value="p"><img src="../../static/img/pt.png"/></button>
+            <br/>
+            <button id="giveup-button" type="submit" name="move" value="e">Give Up</button>
         </form>
 
         <ul id="availablegame-list">
@@ -31,7 +32,25 @@
             <li>
                 <p class="player">{{ game.ownerID.username }} </p>
                     <h1 id="score">
-                        <img class="movepic" src="../../static/img/{{ move.ownerMove }}t.png"> : <img class="movepic" src="../../static/img/{{ move.secondPlayerMove }}t.png">
+                        <img class="movepic" src="../../static/img/{{ move.ownerMove }}t.png">{% if move.ownerMove == move.move.secondPlayerMove%}
+                    =
+                {% elif move.ownerMove == "p" %}
+                    {% if move.secondPlayerMove == "s" %}
+                        <
+                    {% else %}
+                        >
+                    {% endif %}
+                {% elif move.ownerMove == "s" %}
+                    {% if move.secondPlayerMove == "p" %}
+                        >
+                    {% else %}
+                        >
+                    {% endif %}
+                {% elif move.secondPlayerMove == "p" %}
+                    <
+                {% else %}
+                    >
+                {% endif %}<img class="movepic" src="../../static/img/{{ move.secondPlayerMove }}t.png">
                     </h1>
                 <p class="player">{{ game.secondPlayerID.username }}</p>
             </li>
