@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from django import forms
 from django.contrib.auth.models import User
 from userStatistics.views import notify , notifyDel
+import random
 
 
 #class IDGameForm(forms.Form):
@@ -110,6 +111,14 @@ def playGame(request):
         params['passwordRequired'] = False
         move = request.POST.get('move')
         if request.method == "POST" and move != 'e':
+            if (move == 'q'):
+                var = random.randint(0, 2)
+                if (var == 0):
+                    move = 'r'
+                elif(var == 1):
+                    move = 'p'
+                else:
+                    move = 's'
             if currGame.secondPlayerID == request.user:
                 notify(currGame, currGame.ownerID, 'm')
                 if moves.count() == 0 or (moves[0].secondPlayerMove is not None and moves[0].ownerMove is not None):

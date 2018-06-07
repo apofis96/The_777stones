@@ -303,6 +303,14 @@ form input{
     border-style: none;
     background-color: var(--em-color-red);
 }
+#random-button{
+    display: inline-block;
+    margin: 30px;
+    padding: 20px;
+    border-radius: 20px;
+    border-style: none;
+    background-color: var(--em-color);
+}
 main{
     display: block;
 	padding: 0;
