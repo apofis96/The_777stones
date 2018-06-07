@@ -102,60 +102,89 @@ nav{
         border-style: solid;
         border-bottom-color: var(--em-color);
     }
-.availableGame{
-	padding: 2em;
-}
+
+/*Available games*/
+    #availablegame-list{
+	    list-style-type: none;
+    }
+    #availablegame-list li div{
+        display: inline-block;
+    }
+    .availableGame{
+        padding: 20px;
+        display: inline-block;
+        float: left;
+        border: var(--main-bg-color);
+    }
+    .availableGame div{
+        font-size: 20px;
+    }
+    .availableGame span{
+        font-size: 15px;
+        font-style: italic;
+    }
+    .isprivate{
+        margin: 3px;
+        display: block;
+        padding: 20px;
+        float: left;
+
+        width: 50px;
+    }
+    .isprivate img{
+        width: 30px;
+    }
 /* Block aside styles*/
-#gamenav{
-	float: left;
-    margin-top: 2em;
-	padding-right: 2em;
+    #gamenav{
+        float: left;
+        margin-top: 2em;
+        padding-right: 2em;
 
-    border-right-width: thin;
-    border-right-color: #d7d7d7;
-    border-right-style: solid;
-}
+        border-right-width: thin;
+        border-right-color: #d7d7d7;
+        border-right-style: solid;
+    }
+    #gamenav ul {
+        list-style-type: none;
+        padding-left: 20px;
+    }
+    .gamenawitem{
+        margin: 7px;
+    }
+    .gamenawitem a{
+        margin: 3px;
+        padding: 7px 25px 7px 25px;
+        display: block;
+        border: var(--main-bg-color);
+        border-radius: 20px;
+        border-style: solid;
+        border-width: thick;
+    }
+    .gamenawitem a:hover{
+        border: var(--em-color);
+        border-radius: 20px;
+        border-style: solid;
+        border-width: thick;
+    }
+    #gamenav-gamelist{
+        margin-top: 7px;
+        padding-top: 7px;
+    }
+    .gamenawitem span{
+        margin: 3px;
+        margin-top: 25px;
+        padding: 7px 25px 7px 25px;
+    }
+    #gamenav-newgame a{
+        color: #CC3434;
+    }
+    #gamenav-newgame a:hover{
+        border: #CC3434;
+        border-radius: 20px;
+        border-style: solid;
+        border-width: thick;
+    }
 
-#gamenav ul {
-    list-style-type: none;
-    padding-left: 20px;
-}
-.gamenawitem{
-	margin: 7px;
-}
-.gamenawitem a{
-    margin: 3px;
-	padding: 7px 25px 7px 25px;
-    display: block;
-    border: var(--main-bg-color);
-    border-radius: 20px;
-    border-style: solid;
-    border-width: thick;
-}
-.gamenawitem a:hover{
-    border: var(--em-color);
-    border-radius: 20px;
-    border-style: solid;
-    border-width: thick;
-}
-#gamenav-gamelist{
-    margin-top: 7px;
-    padding-top: 7px;
-}
-.gamenawitem span{
-    margin: 3px;
-    margin-top: 25px;
-    padding: 7px 25px 7px 25px;
-}
-#gamenav-newgame a{
-    color: #CC3434;
-}
-#gamenav-newgame a:hover{
-    border: #CC3434;
-    border-radius: 20px;
-    border-style: solid;
-    border-width: thick;
-}
 main{
 	padding: 0;
 	float: left;
