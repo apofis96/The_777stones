@@ -22,7 +22,7 @@
     <ul id="oldmoves-list">
             {% for game in games %}
             <li class="notification-item">
-                <div>{{ game.gameName }}</div> <br/>
+                <div><b>{{ game.gameName }}</b></div> <br/>
                 <span>
                     <p class="player">{{ game.ownerID.username }} </p>
                     <p id="score">{{ game.ownerScore }} : {{ game.secondPlayerScore }} </p>

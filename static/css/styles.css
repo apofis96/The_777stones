@@ -21,7 +21,9 @@ header{
 	display: table-header-group;
     width: 100%;
     height: 100px;
- 	color: white;
+}
+header img {
+    width: 100%;
 }
 
 	#user{

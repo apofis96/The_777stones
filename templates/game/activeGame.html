@@ -1,6 +1,6 @@
 {% extends "base_gamewindow.html" %}
 
-{% block title %}{% if isApproved %}Game!{% else %}Join first!{% endif %}{% endblock %}
+{% block title %}{{ game.gameName }}{% endblock %}
 
 {% block content %}
     <div id="activeGame">
