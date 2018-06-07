@@ -3,13 +3,13 @@
 {% block aside %}
     <aside id="gamenav">
     <ul>
-    <li><a href="{% url 'All Games' %}">Available Games</a></li>
-    <li><a href="{% url 'New Game' %}">New Game</a></li>
-    <li>Now playing:
+    <li class="gamenawitem"><a href="{% url 'All Games' %}">Available Games</a></li>
+    <li class="gamenawitem" id="gamenav-newgame"><a href="{% url 'New Game' %}">New Game</a></li>
+        <li class="gamenawitem" id="gamenav-gamelist"><span>Now playing:</span>
         <ul>
             {% if userGames.count != 0 %}
                 {% for game in userGames %}
-                    <li><a href="{% url 'Join Game' %}?id={{ game.id }}">{{ game.gameName }}</a></li>
+                    <li class="gamenav-listitem"><a href="{% url 'Join Game' %}?id={{ game.id }}">{{ game.gameName }}</a></li>
                 {% endfor %}
             {% else %}
             <li>Sorry, no games!</li>

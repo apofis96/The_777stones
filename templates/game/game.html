@@ -5,9 +5,21 @@
         <p>Didn't find one? <a href="{% url 'New Game' %}"> New game</a></p>
 
         <h1>Available Games: {{ allgamesstats.available }}, now playing {{ allgamesstats.inProgress }}</h1>
-        <ul>
+        <ul id="availablegame-list">
         {% for game in games %}
-            <li><a href="{% url 'Join Game' %}?id={{ game.id }}"><div class="availableGame">{{ game.gameName }} -- <i>{{ game.ownerID.username }}</i></div></a></li>
+            <li>
+            {% if game.isPublic %}
+                <div class="isprivate"></div>
+            {% else %}
+                <div class="isprivate"><img src="../../static/img/private.png" /></div>
+            {% endif %}
+                <div>
+                <a class="availableGame" href="{% url 'Join Game' %}?id={{ game.id }}">
+                <div>{{ game.gameName }}</div> <br/>
+                <span>{{ game.ownerID.username }}</span>
+                </a>
+
+            </div></li>
         {% endfor %}
         </ul>
     {% else %}

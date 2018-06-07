@@ -36,6 +36,8 @@ def newGame(request):
     if request.method == "POST":
         form = NewGameForm(request.POST)
         if form.is_valid():
+            request.session.modified = True
+            request.session['game'] = {}
             newGame = Game()
             newGame.gameName = request.POST.get('gameName')
             if(request.POST.get('gameType') == 'Private'):
