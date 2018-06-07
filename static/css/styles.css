@@ -219,6 +219,13 @@ nav{
         position: absolute;
         right: 50px;
     }
+form ul{
+    list-style-type: none;
+
+}
+form ul li input{
+    height: auto;
+}
 
 form input{
     margin-bottom: 10px;

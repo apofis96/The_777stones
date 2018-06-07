@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import random
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from .forms import NewGameForm
@@ -31,11 +32,11 @@ def game(request):
     activeGames = activeGames.exclude(isCompleted=True)
     return render(
         request, 'game/game.html', {'userGames': activeGames,
+                                    'public': games.exclude(isPublic=False).count(),
                                     'games': games,
                                     'allgamesstats': {
                                         'available': games.count(),
-                                        'inProgress': Game.objects.filter(Q(secondPlayerID__isnull=False),
-                                                                           isCompleted=False).count()
+                                        'inProgress': Game.objects.filter(isCompleted=False).count()
                                     }}
     )
 @login_required()
@@ -67,6 +68,9 @@ def newGame(request):
 @login_required()
 def joinGame(request):
     id = request.GET.get("id")
+    if id == 'r':
+        games = Game.objects.filter(isCompleted=False, isPublic=True)
+        id = games[random.randint(0, games.count())].id
     games = Game.objects.filter(isCompleted=False, pk=id)
     if games[0]:
         request.session.modified = True
@@ -156,8 +160,9 @@ def playGame(request):
                 owScore += 1
     currGame.ownerScore = owScore
     currGame.secondPlayerScore = secScore
-    if moves[0].ownerMove is None or moves[0].secondPlayerMove is None:
-        moves = moves[1:]
+    if moves.count() > 0:
+        if moves[0].ownerMove is None or moves[0].secondPlayerMove is None:
+            moves = moves[1:]
 
     move = request.POST.get('move')
     if move == 'e':

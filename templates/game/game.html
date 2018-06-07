@@ -3,7 +3,11 @@
 {% block content %}
     {% if games.count > 0 %}
         <div id="allgames-top">
-            <span id="allgames-top-create">Didn't find one? <a href="{% url 'New Game' %}"> New game</a></span>
+            <span id="allgames-top-create">
+                {% if public > 0 %}Can't choose? <a href="{% url 'Join Game' %}?id=r">Randomize</a>
+                {% else %} Sorry, nothing to randomize. <a href="{% url 'New Game' %}">Create game</a>
+                    {% endif %}
+            </span>
             <span id="allgames-top-stats">Available Games: {{ allgamesstats.available }}, now playing {{ allgamesstats.inProgress }}</span>
         </div>
         <h1>Choose the one you like: </h1>
