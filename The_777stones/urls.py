@@ -50,3 +50,6 @@ urlpatterns += [
 urlpatterns += [
     path('home/', views.home, name='Home'),
 ]
+urlpatterns += [
+    path('accounts/', include('social_django.urls', namespace='social')),
+]

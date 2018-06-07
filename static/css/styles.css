@@ -216,7 +216,7 @@ nav{
         border-width: thick;
     }
     #allgames-top-stats {
-        position: fixed;
+        position: absolute;
         right: 50px;
     }
 
