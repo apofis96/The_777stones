@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from testapp.models import Game
 from django.db.models import Q
 from django.contrib.auth.models import User
+from testapp.models import Notification
 
 # Create your views here.
 @login_required()
@@ -42,3 +43,15 @@ def statsAll(request):
                                          'bestUser': {'user': rating[0][0], 'winrate': "{0:.2f}".format(rating[0][1] * 100)},
                                          'worstUser': {'user': rating[-1][0], 'winrate': "{0:.2f}".format(rating[-1][1] * 100)}}
     )
+def notify(game,player,type):
+    if(player is not None):
+        currNotify = Notification.objects.filter(gameID=game)
+        if (currNotify is not None) :
+            currNotify.delete()
+        newNotify = Notification()
+        newNotify.playerID = player
+        newNotify.gameID = game
+        newNotify.notificationType = type
+        newNotify.save()
+def notifyDel(game,player):
+    Notification.objects.filter(gameID=game, playerID=player).delete()

@@ -11,4 +11,25 @@
             Goto <a href="{% url 'Games Stats' %}">my statistics </a>
         </div>
     </div>
+    <div>
+        {% if var > 0 %}
+            <h1>Notify: {{ var }}</h1>
+            <ul>
+            {% for noti in notify %}
+                {% if noti.notificationType == 'm' %}
+                    <li><a href="{% url 'Join Game' %}?id={{ noti.gameID.id }}"><div class="availableGame">{{ noti.gameID.gameName }} -- <i>{{ noti.notificationType }}</i></div></a>
+                {% else %}
+                    <li><div class="availableGame">{{ noti.gameID.gameName }} -- <i>{{ noti.notificationType }}</i></div>
+                {% endif %}
+                <form method="post">
+                {% csrf_token %}
+                    <button name="close" type="submit" value={{ noti.id }}>OK</button>
+                </form>
+            </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No games available! <a href="{% url 'New Game' %}"> New game</a></p>
+        {% endif %}
+    </div>
 {% endblock %}

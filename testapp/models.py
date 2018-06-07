@@ -23,4 +23,7 @@ class GameMove(models.Model):
     ownerMove = models.CharField(max_length=1, null=True)
     secondPlayerMove = models.CharField(max_length=1, null=True)
 
-
+class Notification(models.Model):
+    playerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
+    gameID = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='notificationGame')
+    notificationType = models.CharField(max_length=1) #'e' == end game; 'm' == new move
