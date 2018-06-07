@@ -9,8 +9,8 @@ from django.contrib.auth.models import User
 def statsAll(request):
 
     currentUser = request.user;
-    games=Game.objects.filter(Q(ownerID = currentUser) | Q(secondPlayerID = currentUser) )
-    wonGames=games.filter(winnerID=currentUser)
+    games = Game.objects.filter(Q(ownerID = currentUser) | Q(secondPlayerID = currentUser) )
+    wonGames = games.filter(winnerID=currentUser)
 
     users = User.objects.all()
 

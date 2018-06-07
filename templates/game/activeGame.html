@@ -1,0 +1,31 @@
+{% extends "base_gamewindow.html" %}
+
+{% block title %}{% if isApproved %}Game!{% else %}Join first!{% endif %}{% endblock %}
+
+{% block content %}
+    {% if passwordRequired %}
+        <form method="post" action="{% url 'Active Game' %}">
+        {% csrf_token %}
+            {% if wrongPassMessageOn %}
+                <p>Input password to this game: </p>
+            {% endif %}
+            <input type="password" name="password" about="Input Password" />
+            <input type="submit"/>
+        </form>
+    {% else %}
+        <h1>{{ game.ownerScore }} : {{ game.secondPlayerScore }}</h1>
+        <form method="post">
+        {% csrf_token %}
+            <input type="submit" name="move" value="r" />
+            <input type="submit" name="move" value="s" />
+            <input type="submit" name="move" value="p" />
+            <input type="submit" name="move" value="e"/>
+        </form>
+        <ul>
+            {% for move in moves %}
+            <li>{{ move.ownerMove }} ---------- {{ move.secondPlayerMove }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

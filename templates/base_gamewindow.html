@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block aside %}
+    <aside>
+    <ul>
+    <li><a href="{% url 'All Games' %}">Available Games</a></li>
+    <li><a href="{% url 'New Game' %}">New Game</a></li>
+    <li>Now playing:
+        <ul>
+            {% if userGames.count != 0 %}
+                {% for game in userGames %}
+                    <li><a href="{% url 'Join Game' %}?id={{ game.id }}">{{ game.gameName }}</a></li>
+                {% endfor %}
+            {% else %}
+            <li>Sorry, no games!</li>
+            {% endif %}
+        </ul>
+    </li>
+    </ul>
+    </aside>
+{% endblock %}

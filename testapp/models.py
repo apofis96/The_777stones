@@ -9,6 +9,7 @@ class Player(models.Model):
 class Game(models.Model):
     isCompleted = models.BooleanField(default=False)
     isPublic = models.BooleanField()
+    password = models.CharField(max_length=10, null=True)
     gameName = models.CharField(max_length=100, default='NoNameGame')
     ownerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     secondPlayerID =models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='secondPlayer')
