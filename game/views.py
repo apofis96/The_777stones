@@ -20,7 +20,8 @@ from django.contrib.auth.models import User
 def game(request):
     games = Game.objects.filter(Q(secondPlayerID__isnull=True), isCompleted=False)
     games = games.exclude(ownerID=request.user)
-    activeGames = Game.objects.filter(Q(isCompleted=False) and (Q(ownerID=request.user) | Q(secondPlayerID=request.user)))
+    activeGames = Game.objects.filter(Q(ownerID=request.user) | Q(secondPlayerID=request.user))
+    activeGames = activeGames.exclude(isCompleted=True)
     return render(
         request, 'game/game.html', {'userGames': activeGames,
                                     'games': games,
@@ -35,14 +36,21 @@ def newGame(request):
     if request.method == "POST":
         form = NewGameForm(request.POST)
         if form.is_valid():
-            newgame = form.save(commit=False)
-            newgame.ownerID = request.user
-            newgame.save()
+            newGame = Game()
+            newGame.gameName = request.POST.get('gameName')
+            if(request.POST.get('gameType') == 'Private'):
+                newGame.password = request.POST.get('password')
+                newGame.isPublic = False
+            else:
+                newGame.isPublic = True
+            newGame.ownerScore = 0
+            newGame.secondPlayerScore = 0
+            newGame.ownerID = request.user
+            newGame.save()
             request.session.modified = True
-            request.session['game'] = {}
-            request.session['game']['gameAllow'] = True
-            request.session['game']['gameID'] = newgame.pk
-            return HttpResponseRedirect('play')
+            request.session['game']['gameID'] = newGame.pk
+            #return HttpResponseRedirect('play')
+            return redirect('Active Game')
     form = NewGameForm()
     return render(request,'game/newGame.html', {'form': form})
 
@@ -68,7 +76,7 @@ def playGame(request):
         'isApproved' : currGame.secondPlayerID == None,
         'passwordRequired': currGame.isPublic == False and currGame.secondPlayerID == None,
         'wrongPassMessageOn': False}
-    if (currGame.secondPlayerID == None) and (currGame.ownerID != request.user):
+    if (currGame.ownerID != request.user) and (currGame.secondPlayerID == None):
         if currGame.isPublic:
             currGame.secondPlayerID = request.user
             currGame.save()
@@ -80,31 +88,38 @@ def playGame(request):
             else:
                 params['wrongPassMessageOn'] = True;
     else:
-        lastMove = moves[0]
+        params['passwordRequired'] = False
         move = request.POST.get('move')
-        if move != None:
+        if request.method == "POST" and move != 'e':
             if currGame.secondPlayerID == request.user:
-                if (lastMove.secondPlayerMove is not None and lastMove.ownerMove is not None):
+                if moves.count() == 0 or (moves[0].secondPlayerMove is not None and moves[0].ownerMove is not None):
                     newMove = GameMove()
                     newMove.gameID = currGame
                     newMove.moveNo = moves.count()
                     newMove.secondPlayerMove = move
                     newMove.save()
+                    #return HttpResponse("<h2>Kek</h2>")
                 else:
+                    #return HttpResponse("<h2>Kok</h2>")
+                    lastMove = moves[0]
                     lastMove.secondPlayerMove = move
                     lastMove.save()
             elif currGame.ownerID == request.user:
-                if (lastMove.ownerMove is not None and lastMove.secondPlayerMove is not None):
+                if moves.count() == 0 or (moves[0].ownerMove is not None and moves[0].secondPlayerMove is not None):
+                    #return HttpResponse("<h2>Kak</h2>")
                     newMove = GameMove()
                     newMove.gameID = currGame
                     newMove.moveNo = moves.count()
                     newMove.ownerMove = move
                     newMove.save()
                 else:
+                    lastMove = moves[0]
+                   # return HttpResponse("<h2>Kuk</h2>")
                     lastMove.ownerMove = move
                     lastMove.save()
             else:
                 return redirect('All Games')
+            return HttpResponseRedirect('activeGame')
     owScore = 0; secScore = 0
     for move in moves:
         if move.ownerMove == 's':
@@ -124,6 +139,16 @@ def playGame(request):
                 owScore += 1
     currGame.ownerScore = owScore
     currGame.secondPlayerScore = secScore
+
+    move = request.POST.get('move')
+    if move == 'e':
+        if owScore > secScore:
+            currGame.winnerID = currGame.ownerID
+        elif owScore < secScore:
+            currGame.winnerID = currGame.secondPlayerID
+        currGame.isCompleted = True
+        currGame.save()
+        return game(request)
     currGame.save()
     params['isApproved'] = currGame.secondPlayerID != None
     return render(request, 'game/activeGame.html', params)
