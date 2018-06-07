@@ -26,7 +26,7 @@ header{
 	#user{
 		width: auto;
 		border-radius: 0 0 0 10px;
-		position: absolute;
+		position: fixed;
 		font-size: 15px;
 		color: white;
 		padding: 5px;
@@ -49,6 +49,9 @@ nav{
 }
 /*Navigation bar settings*/
 	nav ul{
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
 	    list-style-type: none;
 	    margin: 0;
 	    padding: 0;
@@ -201,4 +204,14 @@ a:active{
 }
 a:hover{
     text-decoration: none;
+}
+
+@media screen and (max-width: 800px) {
+    nav ul li {
+        width: auto;
+    }
+
+    main {
+        margin: 10px;
+    }
 }

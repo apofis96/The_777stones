@@ -15,7 +15,14 @@
 </head>
 
 <body>
-    <div id="user">
+
+      <nav>
+      <ul>
+          <li><a href="{% url 'Home' %}">Home</a></li>
+          <li><a href="{% url 'All Games' %}">Games</a></li>
+          <li><a href="{% url 'Games Stats' %}">Stats</a></li>
+      </ul>
+          <div id="user">
         {% if user.is_authenticated %}
             <div id="username">{{ user.get_username }}</div>
               <a href="{% url 'logout'%}?next=/accounts/login">Logout</a>
@@ -23,12 +30,6 @@
              <div><a href="{% url 'login'%}?next={{request.path}}">Login</a></div>
             {% endif %}
     </div>
-      <nav>
-      <ul>
-          <li><a href="{% url 'Home' %}">Home</a></li>
-          <li><a href="{% url 'All Games' %}">Games</a></li>
-          <li><a href="{% url 'Games Stats' %}">Stats</a></li>
-      </ul>
       </nav>
       {% block aside %}{% endblock %}
       <main>
