@@ -1,3 +1,8 @@
+:root {
+    --main-bg-color: #f9f9f9;
+    --em-color: #008060;
+}
+
 body {
 	display: table;
 	font-family: Verdana, fantasy;
@@ -5,7 +10,7 @@ body {
 	padding: 0;
 	margin: 0;
 	border-style: none;
-	background-color: #f9f9f9;
+	background-color: var(--main-bg-color);
 	color: black;
 	width: 100%;
 	line-height: 1.5;
@@ -53,6 +58,9 @@ nav{
 	nav ul li {
 		float: left;
 	}
+    nav ul li a{
+        color: white;
+    }
     nav ul li a:link {
 		display: block;
 	    background-color: #111111;
@@ -81,6 +89,7 @@ nav{
 	nav ul li a:hover {
         display: block;
         background-color: #111111;
+        color: #008060;
         padding: 3em;
         padding-top: 1em;
         padding-bottom: 1em;
@@ -91,22 +100,76 @@ nav{
         border-top-color: #111111;
         border-bottom: 5px;
         border-style: solid;
-        border-bottom-color: #008060;
+        border-bottom-color: var(--em-color);
     }
 .availableGame{
 	padding: 2em;
 }
+/* Block aside styles*/
 #gamenav{
 	float: left;
     margin-top: 2em;
 	padding-right: 2em;
+
     border-right-width: thin;
     border-right-color: #d7d7d7;
     border-right-style: solid;
+}
+
+#gamenav ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+.gamenawitem{
+	margin: 7px;
+}
+.gamenawitem a{
+    margin: 3px;
+	padding: 7px 25px 7px 25px;
+    display: block;
+    border: var(--main-bg-color);
+    border-radius: 20px;
+    border-style: solid;
+    border-width: thick;
+}
+.gamenawitem a:hover{
+    border: var(--em-color);
+    border-radius: 20px;
+    border-style: solid;
+    border-width: thick;
+}
+#gamenav-gamelist{
+    margin-top: 7px;
+    padding-top: 7px;
+}
+.gamenawitem span{
+    margin: 3px;
+    margin-top: 25px;
+    padding: 7px 25px 7px 25px;
+}
+#gamenav-newgame a{
+    color: #CC3434;
+}
+#gamenav-newgame a:hover{
+    border: #CC3434;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: thick;
 }
 main{
 	padding: 0;
 	float: left;
 	margin: 30px 50px 30px 50px;
 	position: relative;
+}
+a{
+	font-weight: bolder;
+	color: black;
+}
+a:active{
+	color: #008060;
+	text-decoration: #008060;
+}
+a:hover{
+    text-decoration: none;
 }
