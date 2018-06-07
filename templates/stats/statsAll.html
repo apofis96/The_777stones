@@ -2,13 +2,35 @@
 {% block title %}
     Stats
 {% endblock %}
+{% block aside %}
+    <aside id="gamenav">
+        <ul>
+            <li>Games played: {{ currentUser.amountGamesPlayed }}</li>
+            <li>Victories: {{ currentUser.victories }}</li>
+            <li>Winrate: {{ currentUser.winrate }} %</li>
+        </ul>
+    </aside>
+{% endblock %}
 {% block content %}
-    <h1>Best user: {{ bestUser.user.get_username }} -- {{ bestUser.winrate }} %</h1>
-    <h1>Worst user: {{ worstUser.user.get_username }} -- {{ worstUser.winrate }} %</h1>
+    <div id="allgames-top">
+        <span id="allgames-top-create">Best user: {{ bestUser.user.get_username }} ({{ bestUser.winrate }} %)</span>
+        <span id="allgames-top-stats">Worst user: {{ worstUser.user.get_username }} ({{ worstUser.winrate }} %)</span>
+    </div>
+
     <h1>Stats for user {{ currentUser.username }} (#{{ currentUser.place }} in rating)</h1>
-    <ul>
-        <li>Games played: {{ currentUser.amountGamesPlayed }}</li>
-        <li>Victories: {{ currentUser.victories }}</li>
-        <li>Winrate: {{ currentUser.winrate }} %</li>
-    </ul>
+    <div id="oldmoves-container">
+    <ul id="oldmoves-list">
+            {% for game in games %}
+            <li class="notification-item">
+                <div>{{ game.gameName }}</div> <br/>
+                <span>
+                    <p class="player">{{ game.ownerID.username }} </p>
+                    <p id="score">{{ game.ownerScore }} : {{ game.secondPlayerScore }} </p>
+                    <p class="player">{{ game.secondPlayerID.username }}</p>
+                </span>
+            </li>
+
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

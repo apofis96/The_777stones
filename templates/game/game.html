@@ -2,9 +2,11 @@
 {% block title %}All Games{% endblock %}
 {% block content %}
     {% if games.count > 0 %}
-        <p>Didn't find one? <a href="{% url 'New Game' %}"> New game</a></p>
-
-        <h1>Available Games: {{ allgamesstats.available }}, now playing {{ allgamesstats.inProgress }}</h1>
+        <div id="allgames-top">
+            <span id="allgames-top-create">Didn't find one? <a href="{% url 'New Game' %}"> New game</a></span>
+            <span id="allgames-top-stats">Available Games: {{ allgamesstats.available }}, now playing {{ allgamesstats.inProgress }}</span>
+        </div>
+        <h1>Choose the one you like: </h1>
         <ul id="availablegame-list">
         {% for game in games %}
             <li>

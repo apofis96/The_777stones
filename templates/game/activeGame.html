@@ -3,6 +3,7 @@
 {% block title %}{% if isApproved %}Game!{% else %}Join first!{% endif %}{% endblock %}
 
 {% block content %}
+    <div id="activeGame">
     {% if passwordRequired %}
         <form method="post" action="{% url 'Active Game' %}">
         {% csrf_token %}
@@ -13,7 +14,10 @@
             <input type="submit"/>
         </form>
     {% else %}
-        <h1>{{ game.ownerScore }} : {{ game.secondPlayerScore }}</h1>
+        <h2 class="player">{{ game.ownerID.username }} </h2>
+        <h1 id="score">{{ game.ownerScore }} : {{ game.secondPlayerScore }} </h1>
+        <h2 class="player">{{ game.secondPlayerID.username }}</h2>
+
         <form method="post">
         {% csrf_token %}
             <input type="submit" name="move" value="r" />
@@ -21,11 +25,18 @@
             <input type="submit" name="move" value="p" />
             <input type="submit" name="move" value="e"/>
         </form>
-        <ul>
+
+        <ul id="availablegame-list">
             {% for move in moves %}
-            <li>{{ move.ownerMove }} ---------- {{ move.secondPlayerMove }}</li>
+            <li>
+                <p class="player">{{ game.ownerID.username }} </p>
+                    <h1 id="score">
+                        <img class="movepic" src="../../static/img/{{ move.ownerMove }}t.png"> : <img class="movepic" src="../../static/img/{{ move.secondPlayerMove }}t.png">
+                    </h1>
+                <p class="player">{{ game.secondPlayerID.username }}</p>
+            </li>
             {% endfor %}
         </ul>
     {% endif %}
-
+    </div>
 {% endblock %}

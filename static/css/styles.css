@@ -1,6 +1,7 @@
 :root {
     --main-bg-color: #f9f9f9;
     --em-color: #008060;
+    --em-color-red: #CC3434;
 }
 
 body {
@@ -37,11 +38,17 @@ header{
 		border: none;
 		background-color: rgba(55,55,55,0.5);
 	}
+    #user a{
+        color: white;
+    }
 .header{
 	padding: 0;
 	padding-left: 5%;
 }
 
+aside{
+    display: inline-block;
+}
 nav{
 	display: table-row-group;
 	width: 100%;
@@ -107,24 +114,43 @@ nav{
     }
 
 /*Available games*/
-    #availablegame-list{
+    #availablegame-list, #notifications-list{
 	    list-style-type: none;
+    }
+    .notification-item{
+        display: block;
     }
     #availablegame-list li div{
         display: inline-block;
     }
-    .availableGame{
+    .availableGame, .notification-item{
         padding: 20px;
         display: inline-block;
         float: left;
         border: var(--main-bg-color);
     }
-    .availableGame div{
+
+    .notification-item{
+        display: block;
+        float: none;
+    }
+    .notification-item div{
+        display: block;
+    }
+    .notification-item form{
+        display: block;
+        margin-right: 30px;
+    }
+    .availableGame div, .notification-item div, .notification-item a div div, .notification-item div div{
         font-size: 20px;
     }
-    .availableGame span{
+    .availableGame, .notification-item span, .notification-item a div span, .notification-item div span{
         font-size: 15px;
         font-style: italic;
+    }
+    #seen{
+       display: block;
+        float: left;
     }
     .isprivate{
         margin: 3px;
@@ -179,7 +205,7 @@ nav{
         padding: 7px 25px 7px 25px;
     }
     #gamenav-newgame a{
-        color: #CC3434;
+        color: var(--em-color-red);
     }
     #gamenav-newgame a:hover{
         border: #CC3434;
@@ -187,13 +213,87 @@ nav{
         border-style: solid;
         border-width: thick;
     }
+    #allgames-top-stats {
+        position: fixed;
+        right: 50px;
+    }
 
-main{
-	padding: 0;
-	float: left;
-	margin: 30px 50px 30px 50px;
-	position: relative;
+form input{
+    margin-bottom: 10px;
+    height: 2em;
+    text-align: center;
+    border-radius: 2em;
+    border-width: thin;
+    border-style: solid;
 }
+    #login-container, #stats-container{
+        margin: auto;
+        width: 30%;
+        padding: 20px;
+        text-align: center;
+        border-radius: 40px;
+        border-color: lightgray;
+        border-width: thin;
+        border-style: solid;
+    }
+
+    #login-button{
+        border-radius: 20px;
+        border-width: thin;
+        border-style: solid;
+        background-color: var(--em-color);
+        color: white;
+        margin: 5px;
+        padding: 5px 25px 5px 25px;
+    }
+
+    #lost-password{
+        color: var(--em-color-red);
+    }
+    #lost-password a{
+        color: inherit;
+    }
+    #login-main{
+        display: block;
+        float: none;
+	    padding: 0;
+	    margin: 30px 50px 30px 50px;
+        width: auto;
+    }
+#stats-container ul{
+    list-style-type: none;
+    font-size: large;
+}
+#activeGame{
+    text-align: center;
+}
+
+#oldmoves-container{
+    padding-left: 50px;
+}
+#oldmoves-list{
+    list-style-type: none;
+}
+.movepic{
+    width: 60px;
+}
+main{
+    display: block;
+	padding: 0;
+	margin: auto;
+    margin-top: 20px;
+    margin-left: 20%;
+}
+
+.player{
+    display: inline-block;
+}
+#score{
+    display: inline-block;
+    margin: auto 20px;
+    color: var(--em-color-red);
+}
+
 a{
 	font-weight: bolder;
 	color: black;

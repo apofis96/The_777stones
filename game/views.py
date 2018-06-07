@@ -18,6 +18,11 @@ from userStatistics.views import notify , notifyDel
 #    id = forms.IntegerField(label="ID")
 
 # Create your views here.
+def asideParams(user):
+    activeGames = Game.objects.filter(Q(ownerID=user) | Q(secondPlayerID=user))
+    activeGames = activeGames.exclude(isCompleted=True)
+    return activeGames
+
 @login_required()
 def game(request):
     games = Game.objects.filter(Q(secondPlayerID__isnull=True), isCompleted=False)
@@ -56,7 +61,8 @@ def newGame(request):
             #return HttpResponseRedirect('play')
             return redirect('Active Game')
     form = NewGameForm()
-    return render(request,'game/newGame.html', {'form': form})
+    return render(request,'game/newGame.html', {'form': form,
+                                                'userGames': asideParams(request.user)})
 
 @login_required()
 def joinGame(request):
@@ -74,8 +80,10 @@ def joinGame(request):
 def playGame(request):
     request.session.modified = True
     currGame = Game.objects.filter(pk=request.session['game']['gameID'])[0]
+    global moves
     moves = GameMove.objects.filter(gameID=currGame.id).order_by('-moveNo')
-    params = { 'game': currGame,
+    params = {'game': currGame,
+              'userGames': asideParams(request.user),
         'moves' : moves,
         'isApproved' : currGame.secondPlayerID == None,
         'passwordRequired': currGame.isPublic == False and currGame.secondPlayerID == None,
@@ -148,6 +156,8 @@ def playGame(request):
                 owScore += 1
     currGame.ownerScore = owScore
     currGame.secondPlayerScore = secScore
+    if moves[0].ownerMove is None or moves[0].secondPlayerMove is None:
+        moves = moves[1:]
 
     move = request.POST.get('move')
     if move == 'e':
@@ -165,6 +175,7 @@ def playGame(request):
         return game(request)
     currGame.save()
     params['isApproved'] = currGame.secondPlayerID != None
+    params['moves'] = moves
     return render(request, 'game/activeGame.html', params)
 
 

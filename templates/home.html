@@ -1,11 +1,10 @@
-{% extends "base_generic.html" %}
+{% extends "login_generic.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
     <h1>Welcome, {{ request.user.get_username }}</h1>
     <div id="aboutuser">
-        <div id="userpic">==userpic will be here==</div>
         <div>
-            <em>{{ request.user.get_username }}</em><br><hr>
+            <hr>
             Joined on {{ request.user.date_joined }}<br>
             Last login on {{ request.user.last_login }}<br>
             Goto <a href="{% url 'Games Stats' %}">my statistics </a>
@@ -13,23 +12,28 @@
     </div>
     <div>
         {% if var > 0 %}
-            <h1>Notify: {{ var }}</h1>
-            <ul>
+            <h1>New events: {{ var }}</h1>
+            <ul id="notifications-list">
             {% for noti in notify %}
-                {% if noti.notificationType == 'm' %}
-                    <li><a href="{% url 'Join Game' %}?id={{ noti.gameID.id }}"><div class="availableGame">{{ noti.gameID.gameName }} -- <i>{{ noti.notificationType }}</i></div></a>
-                {% else %}
-                    <li><div class="availableGame">{{ noti.gameID.gameName }} -- <i>{{ noti.notificationType }}</i></div>
-                {% endif %}
-                <form method="post">
-                {% csrf_token %}
-                    <button name="close" type="submit" value={{ noti.id }}>OK</button>
-                </form>
-            </li>
+                <li class="notification-item">
+                    <form method="post" id="seen">
+                    {% csrf_token %}
+                        <button id="login-button" name="close" type="submit" value={{ noti.id }}>OK</button>
+                    </form>
+
+                    {% if noti.notificationType == 'm' %}
+                        <a href="{% url 'Join Game' %}?id={{ noti.gameID.id }}">
+                            <div ><div>{{ noti.gameID.gameName }}</div>
+                                <span>New move has been made</span></div></a>
+                    {% else %}
+                        <div ><div>{{ noti.gameID.gameName }}</div>
+                                <span>Your opponent finished this game</span></div>
+                    {% endif %}
+                </li>
             {% endfor %}
             </ul>
         {% else %}
-            <p>No games available! <a href="{% url 'New Game' %}"> New game</a></p>
+            <p>No new messages! <a href="{% url 'New Game' %}"> New game</a></p>
         {% endif %}
     </div>
 {% endblock %}

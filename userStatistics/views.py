@@ -40,6 +40,7 @@ def statsAll(request):
                                                               wonGames.count() * 100 / games.filter(
                                                                   isCompleted=True).count()),
                                                           },
+                                         'games': games.exclude(isCompleted=False),
                                          'bestUser': {'user': rating[0][0], 'winrate': "{0:.2f}".format(rating[0][1] * 100)},
                                          'worstUser': {'user': rating[-1][0], 'winrate': "{0:.2f}".format(rating[-1][1] * 100)}}
     )
