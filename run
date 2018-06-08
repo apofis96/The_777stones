@@ -1,0 +1,9 @@
+#!/bin/bash
+echo ""
+cd /home/ec2-user/The_777stones
+git stash
+git pull
+cd ..
+. venv/bin/activate
+cd The_777stones/
+python manage.py runserver 0.0.0.0:8000
