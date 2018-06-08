@@ -10,4 +10,5 @@ from django.conf.urls import include
 urlpatterns = [
     path('', views.home),
     path('register/', views.RegisterFormView.as_view(), name="sign_up"),
+    path ('register/accounts/login/', views.home)
 ]

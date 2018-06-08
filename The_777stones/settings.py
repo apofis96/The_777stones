@@ -113,7 +113,7 @@ DATABASES = {
 }
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/home'
-
+SIGN_UP_URL = '/home'
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
