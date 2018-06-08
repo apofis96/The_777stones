@@ -4,6 +4,7 @@ from testapp.models import Game
 from django.db.models import Q
 from django.contrib.auth.models import User
 from testapp.models import Notification
+from django.http import HttpResponse
 
 # Create your views here.
 @login_required()
@@ -19,8 +20,10 @@ def statsAll(request):
 
     for u in users:
         games1 = Game.objects.filter(isCompleted=True).filter(Q(ownerID=u) | Q(secondPlayerID=u))
-        wins = games.filter(winnerID=u).count()
+        wins = games1.filter(winnerID=u).count()
         if games1.count() > 0:
+            #var = games1.count()
+            #return HttpResponse(wins)
             item = (u, wins / games1.count())
             rating.append(item)
 
