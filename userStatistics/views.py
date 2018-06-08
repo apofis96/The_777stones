@@ -30,7 +30,8 @@ def statsAll(request):
         if r[0] == currentUser:
             currUserPlace = rating.index(r) + 1
 
-
+    if games.count() == 0:
+        currUserPlace = users.count()
     return render(
         request,'stats/statsAll.html', { 'currentUser': { 'username': currentUser.get_username,
                                                           'place': currUserPlace,
